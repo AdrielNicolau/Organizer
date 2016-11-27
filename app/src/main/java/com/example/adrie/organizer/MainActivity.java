@@ -1,40 +1,32 @@
 package com.example.adrie.organizer;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.List;
 
-import butterknife.BindView;
 import butterknife.BindViews;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MainActivity extends Activity  {
+public class MainActivity extends Activity {
     @BindViews({R.id.txtField_email, R.id.txtField_name, R.id.txtField_studentNumber})
-    List<EditText> profileViews;
+    List<EditText> mProfileViews;
 
-
+    FileManagement mFileManagement = new FileManagement(this, "Profile");
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        if (verifyProfileFileExist() == true) {
+
+
+        if (mFileManagement.verifyProfileFileExist() == true) {
             Intent intent = new Intent(this, MainMenuActivity.class);
             startActivity(intent);
         }
@@ -42,43 +34,19 @@ public class MainActivity extends Activity  {
 
     @OnClick(R.id.bt_register)
     public void createProfile(View view) {
-        String fileName = "Profile";
-        if (profileViews.get(1).getText().toString().equals("") || profileViews.get(0).getText().toString().equals("") || profileViews.get(2).getText().toString().equals("")) {
-            Toast.makeText(getApplicationContext(), "TRY AGAIN", Toast.LENGTH_LONG).show();
-        } else {
-            String profileInfo = "1" + "\n" + profileViews.get(1).getText().toString() + "\n" + profileViews.get(0).getText().toString() + "\n" + profileViews.get(2).getText().toString();
-            try {
-                FileOutputStream fileOutputStream = openFileOutput(fileName, MODE_PRIVATE);
-                fileOutputStream.write(profileInfo.getBytes());
-                fileOutputStream.close();
 
-                Toast.makeText(getApplicationContext(), "Profile Created", Toast.LENGTH_LONG).show();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        if (mProfileViews.get(1).getText().toString().equals("") || mProfileViews.get(0).getText().toString().equals("") || mProfileViews.get(2).getText().toString().equals("")) {
+            Toast.makeText(getApplicationContext(), "All fields must be fill in", Toast.LENGTH_LONG).show();
+        } else {
+
+            Profile profile = new Profile(mProfileViews.get(1).getText().toString(), mProfileViews.get(2).getText().toString(), mProfileViews.get(0).getText().toString());
+            String profileInfo = "1" + "\n" + profile.getName() + "\n" + profile.getEmail() + "\n" + profile.getStudentNumber();
+            mFileManagement.writeFile(profileInfo);
         }
         Intent intent = new Intent(this, MainMenuActivity.class);
         startActivity(intent);
     }
 
-    public boolean verifyProfileFileExist() {
 
-
-        FileInputStream fileInputStream;
-        try {
-            fileInputStream = openFileInput("Profile");
-            InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream);
-            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-            //StringBuffer stringBuffer = new StringBuffer();
-            String verifyProfile = bufferedReader.readLine();
-            if (verifyProfile.equals("1")) {
-                return true;
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return false;
-    }
 }
 
