@@ -2,7 +2,7 @@ package com.example.adrie.organizer;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
+
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
@@ -11,11 +11,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
+
 import java.util.List;
 
 import butterknife.BindView;
@@ -23,77 +19,69 @@ import butterknife.BindViews;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static android.R.attr.visible;
 
 public class ProfileActivity extends Activity {
     @BindViews({R.id.txtView_profileEmail, R.id.txtView_profileName, R.id.txtView_profileStudentNumber})
-    List<TextView> profileViews;
+    List<TextView> mProfileViews;
+
     @BindViews({R.id.txtField_profileEditEmail, R.id.txtField_profileEditName, R.id.txtField_profileEditStudntNum})
-    List<EditText> profileEditFields;
+    List<EditText> mProfileEditFields;
+
     @BindView(R.id.bt_saveChangesEditProfile)
-    Button saveButton;
+    Button mSaveButton;
 
+    @BindView(R.id.bt_profileEdit)
 
+    Button mEditButton;
+
+    Profile mProfile = new Profile();
+    FileManagement mFileManagement = new FileManagement(this, "Profile");
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         ButterKnife.bind(this);
         setProfileEditFieldsVisibility(false);
-        saveButton.setVisibility(View.INVISIBLE);
+        mSaveButton.setVisibility(View.INVISIBLE);
         fillProfileFields(1);
+
     }
 
     public void fillProfileFields(int verify) {
-        FileInputStream fileInputStream;
-        try {
-            fileInputStream = openFileInput("Profile");
-            InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream);
-            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
 
-            int i = 0;
-            bufferedReader.readLine().toString();
-            if (verify == 1) {
-                while (i < 4) {
+        mProfile = mFileManagement.readFileProfile();
+        if (verify == 1) {
 
-                    if (i == 1) {
-                        profileViews.get(1).setText(bufferedReader.readLine().toString());
-                    } else if (i == 2) {
-                        profileViews.get(0).setText(bufferedReader.readLine().toString());
-                    } else if (i == 3) {
-                        profileViews.get(2).setText(bufferedReader.readLine().toString());
-                    }
-                    i++;
-                }
-            } else {
-                while (i < 4) {
+            mProfileViews.get(1).setText(mProfile.getName());
 
-                    if (i == 1) {
-                        profileEditFields.get(1).setText(bufferedReader.readLine().toString());
-                    } else if (i == 2) {
-                        profileEditFields.get(0).setText(bufferedReader.readLine().toString());
-                    } else if (i == 3) {
-                        profileEditFields.get(2).setText(bufferedReader.readLine().toString());
-                    }
-                    i++;
-                }
-            }
+            mProfileViews.get(0).setText(mProfile.getStudentNumber());
 
-        } catch (IOException e) {
-            e.printStackTrace();
+            mProfileViews.get(2).setText(mProfile.getEmail());
+
+        } else {
+
+            mProfileEditFields.get(1).setText(mProfile.getName());
+
+            mProfileEditFields.get(0).setText(mProfile.getStudentNumber());
+
+            mProfileEditFields.get(2).setText(mProfile.getEmail());
+
         }
+
+
     }
+
 
     public void setProfileViewsVisibility(boolean v) {
         int i = 0;
         if (v == true) {
-            while (i < profileViews.size()) {
-                profileViews.get(i).setVisibility(View.VISIBLE);
+            while (i < mProfileViews.size()) {
+                mProfileViews.get(i).setVisibility(View.VISIBLE);
                 i++;
             }
         } else {
-            while (i < profileViews.size()) {
-                profileViews.get(i).setVisibility(View.INVISIBLE);
+            while (i < mProfileViews.size()) {
+                mProfileViews.get(i).setVisibility(View.INVISIBLE);
                 i++;
             }
         }
@@ -102,17 +90,16 @@ public class ProfileActivity extends Activity {
     public void setProfileEditFieldsVisibility(boolean v) {
         int i = 0;
         if (v == true) {
-            while (i < profileEditFields.size()) {
-                profileEditFields.get(i).setVisibility(View.VISIBLE);
+            while (i < mProfileEditFields.size()) {
+                mProfileEditFields.get(i).setVisibility(View.VISIBLE);
                 i++;
             }
         } else {
-            while (i < profileEditFields.size()) {
-                profileEditFields.get(i).setVisibility(View.INVISIBLE);
+            while (i < mProfileEditFields.size()) {
+                mProfileEditFields.get(i).setVisibility(View.INVISIBLE);
                 i++;
             }
         }
-
     }
 
     @OnClick(R.id.bt_profileEdit)
@@ -120,9 +107,8 @@ public class ProfileActivity extends Activity {
         setProfileViewsVisibility(false);
         setProfileEditFieldsVisibility(true);
         fillProfileFields(0);
-        saveButton.setVisibility(View.VISIBLE);
-
-
+        mSaveButton.setVisibility(v.VISIBLE);
+        mEditButton.setVisibility(v.INVISIBLE);
     }
 
     @OnClick(R.id.bt_saveChangesEditProfile)
@@ -135,23 +121,20 @@ public class ProfileActivity extends Activity {
     DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
         @Override
         public void onClick(DialogInterface dialog, int which) {
+
             switch (which) {
                 case DialogInterface.BUTTON_POSITIVE:
-                    String fileName = "Profile";
-                    if (profileEditFields.get(1).getText().toString().equals("") || profileEditFields.get(0).getText().toString().equals("") || profileEditFields.get(2).getText().toString().equals("")) {
+
+                    if (mProfileEditFields.get(1).getText().toString().equals("") || mProfileEditFields.get(0).getText().toString().equals("") || mProfileEditFields.get(2).getText().toString().equals("")) {
                         Toast.makeText(getApplicationContext(), "TRY AGAIN", Toast.LENGTH_LONG).show();
                     } else {
-                        String profileInfo = "1" + "\n" + profileEditFields.get(1).getText().toString() + "\n" + profileEditFields.get(0).getText().toString() + "\n" + profileEditFields.get(2).getText().toString();
-                        try {
-                            FileOutputStream fileOutputStream = openFileOutput(fileName, MODE_PRIVATE);
-                            fileOutputStream.write(profileInfo.getBytes());
-                            fileOutputStream.close();
-
-                            Toast.makeText(getApplicationContext(), "Profile Created", Toast.LENGTH_LONG).show();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+                        String profileInfo = "1" + "\n" + mProfileEditFields.get(1).getText().toString() + "\n" + mProfileEditFields.get(0).getText().toString() + "\n" + mProfileEditFields.get(2).getText().toString();
+                        mFileManagement.writeFile(profileInfo);
                     }
+                    setProfileEditFieldsVisibility(false);
+                    setProfileViewsVisibility(true);
+                    mSaveButton.setVisibility(View.INVISIBLE);
+                    mEditButton.setVisibility(View.VISIBLE);
                     break;
 
                 case DialogInterface.BUTTON_NEGATIVE:
