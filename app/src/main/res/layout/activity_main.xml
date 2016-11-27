@@ -49,7 +49,7 @@
         android:id="@+id/bt_register"
         android:layout_alignParentBottom="true"
         android:layout_alignStart="@+id/txtView_studentNumber"
-        android:onClick="createProfile"/>
+       />
 
     <TextView
         android:id="@+id/txtView_studentNumber"

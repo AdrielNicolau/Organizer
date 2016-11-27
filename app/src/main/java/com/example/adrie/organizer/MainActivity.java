@@ -2,6 +2,7 @@ package com.example.adrie.organizer;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -20,8 +21,9 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.BindViews;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity  {
     @BindViews({R.id.txtField_email, R.id.txtField_name, R.id.txtField_studentNumber})
     List<EditText> profileViews;
 
@@ -32,10 +34,13 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        verifyProfileFileExist();
+        if (verifyProfileFileExist() == true) {
+            Intent intent = new Intent(this, MainMenuActivity.class);
+            startActivity(intent);
+        }
     }
 
-
+    @OnClick(R.id.bt_register)
     public void createProfile(View view) {
         String fileName = "Profile";
         if (profileViews.get(1).getText().toString().equals("") || profileViews.get(0).getText().toString().equals("") || profileViews.get(2).getText().toString().equals("")) {
@@ -52,10 +57,11 @@ public class MainActivity extends Activity {
                 e.printStackTrace();
             }
         }
-
+        Intent intent = new Intent(this, MainMenuActivity.class);
+        startActivity(intent);
     }
 
-    public void verifyProfileFileExist() {
+    public boolean verifyProfileFileExist() {
 
 
         FileInputStream fileInputStream;
@@ -66,15 +72,13 @@ public class MainActivity extends Activity {
             //StringBuffer stringBuffer = new StringBuffer();
             String verifyProfile = bufferedReader.readLine();
             if (verifyProfile.equals("1")) {
-                Toast.makeText(getApplicationContext(), "Ja EXISTE", Toast.LENGTH_LONG).show();
-            } else {
-                Toast.makeText(getApplicationContext(), "NOPE", Toast.LENGTH_LONG).show();
+                return true;
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-
+        return false;
     }
 }
 

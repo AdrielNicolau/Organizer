@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main_menu"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.example.adrie.organizer.MainMenuActivity">
+
+    <Button
+        android:text="Profile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="90dp"
+        android:id="@+id/bt_profile"
+        android:layout_alignEnd="@+id/bt_sendTimetable"
+        android:layout_alignStart="@+id/bt_sendTimetable"
+        />
+
+    <Button
+        android:text="Show Timetable"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="30dp"
+        android:id="@+id/bt_showTimetable"
+        android:layout_above="@+id/bt_editTimetable"
+        android:layout_centerHorizontal="true"
+        />
+
+    <Button
+        android:text="Edit Timetable"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="30dp"
+        android:id="@+id/bt_editTimetable"
+        android:layout_above="@+id/bt_sendTimetable"
+        android:layout_alignStart="@+id/bt_showTimetable"
+        android:layout_alignEnd="@+id/bt_showTimetable"
+        />
+
+    <Button
+        android:text="Send Timetable"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="30dp"
+        android:id="@+id/bt_sendTimetable"
+        android:layout_above="@+id/bt_profile"
+        android:layout_alignStart="@+id/bt_editTimetable"
+        android:layout_alignEnd="@+id/bt_editTimetable"
+        />
+</RelativeLayout>
