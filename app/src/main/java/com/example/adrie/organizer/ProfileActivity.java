@@ -138,7 +138,7 @@ public class ProfileActivity extends Activity {
                     break;
 
                 case DialogInterface.BUTTON_NEGATIVE:
-                    Toast.makeText(getApplicationContext(), "TEST 2222", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "TEST 2222 345", Toast.LENGTH_LONG).show();
                     break;
             }
         }
