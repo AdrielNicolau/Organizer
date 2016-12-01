@@ -36,7 +36,7 @@ public class MainActivity extends Activity {
     public void createProfile(View view) {
 
         if (mProfileViews.get(1).getText().toString().equals("") || mProfileViews.get(0).getText().toString().equals("") || mProfileViews.get(2).getText().toString().equals("")) {
-            Toast.makeText(getApplicationContext(), "All fields must be fill in", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "important", Toast.LENGTH_LONG).show();
         } else {
 
             Profile profile = new Profile(mProfileViews.get(1).getText().toString(), mProfileViews.get(2).getText().toString(), mProfileViews.get(0).getText().toString());
