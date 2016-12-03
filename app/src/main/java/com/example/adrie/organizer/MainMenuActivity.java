@@ -42,7 +42,7 @@ public class MainMenuActivity extends Activity {
     public void ProfileMenu(View view) {
         Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
         startActivity(intent);
-        Toast.makeText(getApplicationContext(), "HELLO", Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), "HELLO...", Toast.LENGTH_LONG).show();
     }
 
 
