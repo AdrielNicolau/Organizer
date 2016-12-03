@@ -123,7 +123,7 @@ public class ProfileActivity extends Activity {
         public void onClick(DialogInterface dialog, int which) {
 
             switch (which) {
-                case DialogInterface.BUTTON_POSITIVE:
+                case DialogInterface.BUTTON_POSITIVE: // botao sim
 
                     if (mProfileEditFields.get(1).getText().toString().equals("") || mProfileEditFields.get(0).getText().toString().equals("") || mProfileEditFields.get(2).getText().toString().equals("")) {
                         Toast.makeText(getApplicationContext(), "TRY AGAIN", Toast.LENGTH_LONG).show();
@@ -137,7 +137,7 @@ public class ProfileActivity extends Activity {
                     mEditButton.setVisibility(View.VISIBLE);
                     break;
 
-                case DialogInterface.BUTTON_NEGATIVE:
+                case DialogInterface.BUTTON_NEGATIVE://
                     Toast.makeText(getApplicationContext(), "TEST 2222", Toast.LENGTH_LONG).show();
                     break;
             }
